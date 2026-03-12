@@ -30,7 +30,7 @@ class UserController extends Controller
         UserModel::where('username', 'customer-1')->update($data); 
 
         // 3. Ambil semua data untuk ditampilkan ke view
-        $user = UserModel::all(); 
-        return view('user', ['data' => $user]);
+       $user = UserModel::where('username','manager9')->firstOrFail();
+        return view('user', ['user' => $user]);
     }
 }
