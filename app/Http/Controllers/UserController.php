@@ -11,34 +11,21 @@ class UserController extends Controller
 {
     public function index()
     {
-
-    $data = [
-        'level_id' => 2,
-        'username' => 'manager_tiga',
-        'nama' => 'Manager 3',
-        'password' => Hash::make('12345'),
-        
-    ];
-
-    UserModel::create($data);
-        // 1. Siapkan data yang ingin diubah
-        $data = [
-            'nama' => 'Pelanggan Pertama',
-        ];
-
-        // 2. Update data user berdasarkan username 'customer-1'
-        UserModel::where('username', 'customer-1')->update($data); 
-
-        // 3. Ambil semua data untuk ditampilkan ke view
-         $user = UserModel::firstOrNew(
-        ['username' => 'manager33'],
-        [
-            'nama' => 'Manager Tiga Tiga',
+        $user = UserModel::create([
+            'username' => 'manager11',
+            'nama' => 'Manager11',
             'password' => Hash::make('12345'),
-            'level_id' => 2
-        ]
-    );
-    $user->save();
-        return view('user', ['data' => $user]);
+            'level_id' => 2,
+        ]);
+
+        $user->username = 'manager12';
+
+        $user->save();
+
+        $user->wasChanged(); // true
+        $user->wasChanged('username'); // true
+        $user->wasChanged(['username', 'level_id']); // true
+        $user->wasChanged('nama'); // false
+        dd($user->wasChanged(['nama', 'username'])); // true
     }
 }
