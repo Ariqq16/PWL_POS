@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $user = UserModel::all();
-        return view('user', ['data' => $user]);
+      $user = User::with('level')->get();
+    return view('user', ['data' => $user]);
     }
 
     public function tambah()
@@ -22,7 +21,7 @@ class UserController extends Controller
 
     public function tambah_simpan(Request $request)
     {
-    UserModel::create([
+    User::create([
         'username' => $request->username,
         'nama'     => $request->nama,
         'password' => Hash::make($request->password),
@@ -34,13 +33,13 @@ class UserController extends Controller
 
     public function ubah($id)
     {
-    $user = UserModel::find($id);
+    $user = User::find($id);
     return view('user_ubah', ['data' => $user]);
     }
 
     public function ubah_simpan($id, Request $request)
     {
-    $user = UserModel::find($id);
+    $user = User::find($id);
 
     $user->username = $request->username;
     $user->nama = $request->nama;
@@ -54,9 +53,11 @@ class UserController extends Controller
 
     public function hapus($id)
     {
-    $user = UserModel::find($id);
+    $user = User::find($id);
     $user->delete();
 
     return redirect('/user');
     }
+
+    
 }
